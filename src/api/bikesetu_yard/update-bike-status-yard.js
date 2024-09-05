@@ -5,7 +5,7 @@ module.exports = async function(req, res)  {
         const { id } = req.params;
         const { newStatus } = req.body;
 
-        const bike = await prisma.bike.findUnique({ where: { id } });
+        const bike = await prisma.bike.findUnique({ where: { id: Number(id) } });
 
         if (!bike) {
             return res.status(404).json({ error: 'Bike not found' });

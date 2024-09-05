@@ -6,7 +6,7 @@ module.exports = async function(req, res) {
         const { newStatus, customerId } = req.body;
 
         const bike = await prisma.bike.findUnique({
-            where: { id, franchiseeId: req.user.sys_id },
+            where: { id: Number(id), franchiseeId: req.user.sys_id },
             include: { franchisee: true }
         });
 

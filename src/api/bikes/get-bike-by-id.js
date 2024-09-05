@@ -5,7 +5,7 @@ module.exports = async function(req, res) {
         const { id } = req.params;
 
         const bike = await prisma.bike.findUnique({
-            where: { id },
+            where: { id: Number(id) },
             include: {
                 brand: true,
             },
