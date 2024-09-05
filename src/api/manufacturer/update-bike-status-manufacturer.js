@@ -23,6 +23,13 @@ module.exports = async function(req, res)  {
                 status,
                 departureDate: status === 'MANUFACTURED' ? new Date() : undefined,
             },
+            include: {
+                modal: {
+                    include: {
+                        brand: true
+                    }
+                }
+            }
         });
 
         res.json(updatedBike);
