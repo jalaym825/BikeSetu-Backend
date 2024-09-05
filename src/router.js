@@ -11,7 +11,7 @@ function routes(app) {
     app.use('/manufacturer', manufacturerRouter);
     app.use('/bikes', bikesRouter);
     app.use('/franchisee', franchiseeRouter);
-    app.use('/bikesetu_yard', bikesetuYardRouter);
+    app.use('/yard', bikesetuYardRouter);
 }
 
 module.exports = routes;
