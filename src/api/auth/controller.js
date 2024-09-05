@@ -112,15 +112,7 @@ const login = async (req, res, next) => {
         delete user.sys_id;
         delete user.token;
 
-        // Set the cookie with HttpOnly and Secure flags
-        res.cookie("token", token, {
-            // httpOnly: true,
-            // secure: process.env.NODE_ENV === "production", // Ensure Secure flag is true in production
-            maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
-            // sameSite: 'strict', // Better security against CSRF attacks
-        });
-
-        return res.status(200).json({
+        return res.cookie("token", token).status(200).json({
             token,
             user,
         });
