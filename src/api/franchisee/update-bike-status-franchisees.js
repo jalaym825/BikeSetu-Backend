@@ -3,7 +3,7 @@ const prisma = require('../../utils/PrismaClient');
 module.exports = async function(req, res) {
     try {
         const { id } = req.params;
-        const { newStatus, customerId } = req.body;
+        const { newStatus } = req.body;
 
         const bike = await prisma.bike.findUnique({
             where: { id: Number(id), franchiseeId: req.user.sys_id },
@@ -24,15 +24,16 @@ module.exports = async function(req, res) {
             const updateData = {
                 status: newStatus,
                 arrivalDate: newStatus === 'AT_FRANCHISEE' ? new Date() : bike.arrivalDate,
-                deliveryDate: newStatus === 'DELIVERED_TO_CUSTOMER' ? new Date() : bike.deliveryDate
+                deliveryDate: newStatus === 'DELIVERED_TO_CUSTOMER' ? new Date() : bike.deliveryDate,
+                customerId: newStatus === 'DELIVERED_TO_CUSTOMER' ? "cm0pvosxu000160c6430xzxcm" : bike.customerId
             };
 
-            if (newStatus === 'DELIVERED_TO_CUSTOMER') {
-                if (!customerId) {
-                    return res.status(400).json({ error: 'Customer ID is required for delivery' });
-                }
-                updateData.customerId = customerId;
-            }
+            // if (newStatus === 'DELIVERED_TO_CUSTOMER') {
+            //     if (!customerId) {
+            //         return res.status(400).json({ error: 'Customer ID is required for delivery' });
+            //     }
+            //     updateData.customerId = customerId;
+            // }
 
             const updatedBike = await prisma.bike.update({
                 where: { id },
