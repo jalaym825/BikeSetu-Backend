@@ -78,7 +78,7 @@ const isManufacturer = async (req, res, next) => {
                 email: email.toLowerCase(),
             },
         });
-        if (!manufacturer || !manufacturer.roles.includes("MANUFACTURER")) {
+        if (!manufacturer || !manufacturer.role === "MANUFACTURER") {
             logger.warn(`[/middleware/isManufacturer] - manufacturer not found`);
             logger.debug(`[/middleware/isManufacturer] - email: ${email}`);
             return res.status(400).json({
