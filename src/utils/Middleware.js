@@ -74,13 +74,11 @@ const isManufacturer = async (req, res, next) => {
     try {
         if (!req.user.role === "MANUFACTURER") {
             logger.warn(`[/middleware/isManufacturer] - manufacturer not found`);
-            logger.debug(`[/middleware/isManufacturer] - email: ${email}`);
             return res.status(400).json({
                 error: "Manufacturer not found",
             });
         }
-        logger.info(`[/middleware/isManufacturer] - manufacturer: ${manufacturer.sys_id} found`);
-        req.manufacturer = manufacturer;
+        logger.info(`[/middleware/isManufacturer] - manufacturer: ${req.user.sys_id} found`);
         next();
     } catch (error) {
         logger.error(`[/middleware/isManufacturer] - ${error.stack}`);
