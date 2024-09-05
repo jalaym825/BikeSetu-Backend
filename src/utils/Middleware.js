@@ -72,13 +72,7 @@ const verifyJWT = async (req, res, next) => {
 
 const isManufacturer = async (req, res, next) => {
     try {
-        const { email } = req.body;
-        let manufacturer = await prisma.users.findUnique({
-            where: {
-                email: email.toLowerCase(),
-            },
-        });
-        if (!manufacturer || !manufacturer.role === "MANUFACTURER") {
+        if (!req.user.role === "MANUFACTURER") {
             logger.warn(`[/middleware/isManufacturer] - manufacturer not found`);
             logger.debug(`[/middleware/isManufacturer] - email: ${email}`);
             return res.status(400).json({
