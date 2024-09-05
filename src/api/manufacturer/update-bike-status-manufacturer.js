@@ -3,7 +3,7 @@ const prisma = require('../../utils/PrismaClient');
 module.exports = async function(req, res)  {
     try {
         const { bikeId } = req.params;
-        const { status, currentLocation } = req.body;
+        const { status } = req.body;
 
         const bike = await prisma.bike.findUnique({
             where: { id: bikeId },
@@ -21,7 +21,6 @@ module.exports = async function(req, res)  {
             where: { id: bikeId },
             data: {
                 status,
-                currentLocation,
                 departureDate: status === 'MANUFACTURED' ? new Date() : undefined,
             },
         });
