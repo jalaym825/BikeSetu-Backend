@@ -10,7 +10,11 @@ module.exports = async function(req, res)  {
                 status: status ? status : undefined,
             },
             include: {
-                modal: true,
+                modal: {
+                    include: {
+                        brand: true
+                    }
+                },
             },
         });
 
