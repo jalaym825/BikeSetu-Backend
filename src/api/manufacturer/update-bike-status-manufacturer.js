@@ -32,6 +32,9 @@ module.exports = async function(req, res)  {
             }
         });
 
+        console.log('Updated bike status:', updatedBike);
+        
+
         res.json(updatedBike);
     } catch (error) {
         console.error('Error updating bike status:', error);
