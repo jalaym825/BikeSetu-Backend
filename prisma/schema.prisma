@@ -55,9 +55,12 @@ model Users {
   password      String
   isPasswordSet Boolean @default(false)
 
-  roles      ROLES[] @default([CUSTOMER])
+  role      ROLES   @default(CUSTOMER)
   blocked    Boolean @default(false)
   isVerified Boolean @default(false)
+
+  locationId String?
+  location   Location? @relation(fields: [locationId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -65,6 +68,9 @@ model Users {
   verification_tokens   VerificationTokens[]  @relation("verificationToken")
   password_reset_tokens PasswordResetTokens[] @relation("resetPasswordToken")
   customerBikes         Bike[]                @relation("CustomerBikes")
+  manufacturerBikes     Bike[]                @relation("ManufacturerBikes")
+  bikesetuYardBikes     Bike[]                @relation("BikesetuYardBikes")
+  franchiseeBikes       Bike[]                @relation("FranchiseeBikes")
 }
 
 model VerificationTokens {
@@ -101,13 +107,12 @@ model Bike {
   modalId         String
   modal           BikeModals @relation(fields: [modalId], references: [id])
   status          BikeStatus
-  currentLocation String
   manufacturerId  String
-  manufacturer    Location   @relation("ManufacturerBikes", fields: [manufacturerId], references: [id])
+  manufacturer    Users      @relation("ManufacturerBikes", fields: [manufacturerId], references: [sys_id])
   bikesetuYardId  String?
-  bikesetuYard    Location?  @relation("BikesetuYardBikes", fields: [bikesetuYardId], references: [id])
+  bikesetuYard    Users?     @relation("BikesetuYardBikes", fields: [bikesetuYardId], references: [sys_id])
   franchiseeId    String?
-  franchisee      Location?  @relation("FranchiseeBikes", fields: [franchiseeId], references: [id])
+  franchisee      Users?     @relation("FranchiseeBikes", fields: [franchiseeId], references: [sys_id])
   customerId      String?
   customer        Users?     @relation("CustomerBikes", fields: [customerId], references: [sys_id])
   arrivalDate     DateTime?
@@ -120,22 +125,12 @@ model Bike {
 }
 
 model Location {
-  id                String       @id @default(uuid())
-  name              String
-  type              LocationType
-  address           String
-  city              String
-  state             String
-  country           String
-  postalCode        String
-  manufacturerBikes Bike[]       @relation("ManufacturerBikes")
-  bikesetuYardBikes Bike[]       @relation("BikesetuYardBikes")
-  franchiseeBikes   Bike[]       @relation("FranchiseeBikes")
-}
+  id         String @id @default(uuid())
+  address    String
+  city       String
+  state      String
+  country    String
+  postalCode String
 
-enum LocationType {
-  MANUFACTURER
-  BIKESETU_YARD
-  FRANCHISEE
-  CUSTOMER
+  users Users[]
 }

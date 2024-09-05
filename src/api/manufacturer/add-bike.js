@@ -1,8 +1,12 @@
 const prisma = require('../../utils/PrismaClient');
 
-module.exports = async function(req, res)  {
+module.exports = async function(req, res) {
     try {
-        const { modalId, manufacturerId, currentLocation } = req.body;
+        const { modalId, quantity } = req.body;
+
+        if (!quantity || quantity < 1) {
+            return res.status(400).json({ error: 'Invalid quantity. Must be a positive integer.' });
+        }
 
         const bikeModal = await prisma.bikeModals.findUnique({
             where: { id: modalId },
@@ -12,27 +16,23 @@ module.exports = async function(req, res)  {
             return res.status(404).json({ error: 'Bike modal not found' });
         }
 
-        const manufacturer = await prisma.location.findFirst({
-            where: { id: manufacturerId, type: 'MANUFACTURER' },
+        const bikesToCreate = Array(quantity).fill().map(() => ({
+            modalId,
+            status: 'MANUFACTURING',
+            arrivalDate: new Date(),
+            manufacturerId: req.user.sys_id,
+        }));
+
+        const createdBikes = await prisma.bike.createMany({
+            data: bikesToCreate,
         });
 
-        if (!manufacturer) {
-            return res.status(404).json({ error: 'Manufacturer not found' });
-        }
-
-        const newBike = await prisma.bike.create({
-            data: {
-                modalId,
-                manufacturerId,
-                status: 'MANUFACTURING',
-                currentLocation,
-                arrivalDate: new Date(),
-            },
+        res.status(201).json({
+            message: `Successfully created ${createdBikes.count} bikes`,
+            count: createdBikes.count,
         });
-
-        res.status(201).json(newBike);
     } catch (error) {
-        console.error('Error adding new bike:', error);
+        console.error('Error adding new bikes:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }

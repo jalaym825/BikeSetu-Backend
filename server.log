@@ -8,3 +8,5 @@
 Validation Error Count: 1
 05-09-2024 15:32:22 warn: [/middleware/verifyJWT] - token missing
 05-09-2024 15:32:22 debug: [/middleware/verifyJWT] - token: undefined
+05-09-2024 20:53:41 warn: [/middleware/verifyJWT] - token missing
+05-09-2024 20:53:42 debug: [/middleware/verifyJWT] - token: undefined
