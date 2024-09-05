@@ -2,7 +2,6 @@ const prisma = require('../../utils/PrismaClient');
 
 module.exports = async function(req, res)  {
     try {
-        const { manufacturerId } = req.params;
         const { status } = req.query;
 
         if(!manufacturerId) {
@@ -11,7 +10,7 @@ module.exports = async function(req, res)  {
 
         const bikes = await prisma.bike.findMany({
             where: {
-                manufacturerId,
+                manufacturerId: req.user.sys_id,
                 status: status ? status : undefined,
             },
             include: {

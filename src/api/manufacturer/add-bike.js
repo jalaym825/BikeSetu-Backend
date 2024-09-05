@@ -28,7 +28,7 @@ module.exports = async function(req, res) {
         });
 
         res.status(201).json({
-            message: `Successfully created ${createdBikes.count} bikes`,
+            message: `Successfully added ${createdBikes.count} bikes in manufacturing...`,
             count: createdBikes.count,
         });
     } catch (error) {
