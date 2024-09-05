@@ -3,7 +3,7 @@ const prisma = require('../../utils/PrismaClient');
 module.exports = async function(req, res)  {
     try {
         const { id } = req.params;
-        const { newStatus, yardId } = req.body;
+        const { newStatus } = req.body;
 
         const bike = await prisma.bike.findUnique({ where: { id } });
 
@@ -19,10 +19,10 @@ module.exports = async function(req, res)  {
                 where: { id },
                 data: {
                     status: newStatus,
-                    yardId: newStatus === 'AT_YARD' ? yardId : null,
-                    arrivalDate: newStatus === 'AT_YARD' ? new Date() : bike.arrivalDate,
+                    yardId: newStatus === 'AT_BIKESETU_YARD' ? req.user.sys_id : undefined,
+                    arrivalDate: newStatus === 'AT_BIKESETU_YARD' ? new Date() : bike.arrivalDate,
                     departureDate: newStatus === 'IN_TRANSIT_TO_FRANCHISEE' ? new Date() : bike.departureDate,
-                    franchiseeId: newStatus === 'IN_TRANSIT_TO_FRANCHISEE' ? "cm0pa3an800011oomozizk53z" : null,
+                    franchiseeId: newStatus === 'IN_TRANSIT_TO_FRANCHISEE' ? "cm0pa3an800011oomozizk53z" : undefined,
                 },
                 include: {
                     modal: {
