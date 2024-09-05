@@ -21,7 +21,8 @@ module.exports = async function(req, res)  {
                     status: newStatus,
                     yardId: newStatus === 'AT_YARD' ? yardId : null,
                     arrivalDate: newStatus === 'AT_YARD' ? new Date() : bike.arrivalDate,
-                    departureDate: newStatus === 'IN_TRANSIT_TO_FRANCHISEE' ? new Date() : bike.departureDate
+                    departureDate: newStatus === 'IN_TRANSIT_TO_FRANCHISEE' ? new Date() : bike.departureDate,
+                    franchiseeId: newStatus === 'IN_TRANSIT_TO_FRANCHISEE' ? "cm0pa3an800011oomozizk53z" : null,
                 }
             });
 

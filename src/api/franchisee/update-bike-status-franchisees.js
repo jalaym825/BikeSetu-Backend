@@ -6,17 +6,12 @@ module.exports = async function(req, res) {
         const { newStatus, customerId } = req.body;
 
         const bike = await prisma.bike.findUnique({
-            where: { id },
+            where: { id, franchiseeId: req.user.sys_id },
             include: { franchisee: true }
         });
 
         if (!bike) {
             return res.status(404).json({ error: 'Bike not found' });
-        }
-
-        // Check if the bike is associated with the franchisee manager's franchisee
-        if (bike.franchiseeId !== req.user.franchiseeId) {
-            return res.status(403).json({ error: 'You do not have permission to update this bike' });
         }
 
         // Define valid status transitions for franchisee managers
