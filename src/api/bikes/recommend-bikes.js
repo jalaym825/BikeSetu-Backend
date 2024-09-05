@@ -12,6 +12,9 @@ const pool = new Pool({
 module.exports = async function(req, res) {
     try {
         const { prompt } = req.body;
+        if(!prompt) {
+            return res.status(400).json({ error: 'Prompt is required' });
+        }
         const response = await axios.post(process.env.AIML_SERVER + '/recommend-bikes', { user_prompt: prompt });
 
         let sqlQuery = response.data.sql_query;
