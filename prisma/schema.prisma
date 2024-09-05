@@ -22,6 +22,17 @@ model BikeModals {
   topSpeed     Int
   range        Int
   chargingTime Int
+  weight       Int
+  brandId      String
+  brand        Brand    @relation(fields: [brandId], references: [id])
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model Brand {
+  id        String       @id @default(uuid())
+  name      String       @unique
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  bikes     BikeModals[]
 }
