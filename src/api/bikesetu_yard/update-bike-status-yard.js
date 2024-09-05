@@ -12,8 +12,8 @@ module.exports = async function(req, res)  {
         }
 
         if (
-            (bike.status === 'IN_TRANSIT_TO_YARD' && newStatus === 'AT_YARD') ||
-            (bike.status === 'AT_YARD' && newStatus === 'IN_TRANSIT_TO_FRANCHISEE')
+            (bike.status === 'IN_TRANSIT_TO_YARD' && newStatus === 'AT_BIKESETU_YARD') ||
+            (bike.status === 'AT_BIKESETU_YARD' && newStatus === 'IN_TRANSIT_TO_FRANCHISEE')
         ) {
             const updatedBike = await prisma.bike.update({
                 where: { id },
