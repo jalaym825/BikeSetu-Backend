@@ -103,7 +103,7 @@ enum BikeStatus {
 }
 
 model Bike {
-  id              String     @id @default(uuid())
+  id              Int     @id @default(autoincrement())
   modalId         String
   modal           BikeModals @relation(fields: [modalId], references: [id])
   status          BikeStatus
