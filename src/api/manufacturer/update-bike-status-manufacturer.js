@@ -22,7 +22,7 @@ module.exports = async function(req, res)  {
             data: {
                 status,
                 departureDate: status === 'MANUFACTURED' ? new Date() : undefined,
-                bikesetuYardId: status === 'IN_TRANSIST_TO_YARD' ? "cm0pn98g10001l1pv2xem0smx" : undefined,
+                bikesetuYardId: status === 'IN_TRANSIT_TO_YARD' ? "cm0pn98g10001l1pv2xem0smx" : undefined,
             },
             include: {
                 modal: {
