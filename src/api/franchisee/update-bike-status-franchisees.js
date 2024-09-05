@@ -36,7 +36,7 @@ module.exports = async function(req, res) {
             // }
 
             const updatedBike = await prisma.bike.update({
-                where: { id },
+                where: { id: Number(id) },
                 data: updateData
             });
 

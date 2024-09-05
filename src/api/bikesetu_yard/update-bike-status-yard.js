@@ -16,7 +16,7 @@ module.exports = async function(req, res)  {
             (bike.status === 'AT_BIKESETU_YARD' && newStatus === 'IN_TRANSIT_TO_FRANCHISEE')
         ) {
             const updatedBike = await prisma.bike.update({
-                where: { id },
+                where: { id: Number(id) },
                 data: {
                     status: newStatus,
                     bikesetuYardId: newStatus === 'AT_BIKESETU_YARD' ? req.user.sys_id : undefined,

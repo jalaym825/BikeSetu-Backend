@@ -18,7 +18,7 @@ module.exports = async function(req, res)  {
         }
 
         const updatedBike = await prisma.bike.update({
-            where: { id: bikeId },
+            where: { id: Number(bikeId) },
             data: {
                 status,
                 departureDate: status === 'MANUFACTURED' ? new Date() : undefined,
