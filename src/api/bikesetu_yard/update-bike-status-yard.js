@@ -38,6 +38,7 @@ module.exports = async function(req, res)  {
             res.status(400).json({ error: 'Invalid status transition' });
         }
     } catch (error) {
+        console.error('Error updating bike status:', error);
         res.status(500).json({ error: 'An error occurred while updating the bike status' });
     }
 }
