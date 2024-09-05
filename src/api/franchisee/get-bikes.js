@@ -4,6 +4,8 @@ module.exports = async function(req, res)  {
     try {
         const { status } = req.query;
 
+        console.log('Fetching franchisee bikes:', req.user.sys_id, status);
+
         const bikes = await prisma.bike.findMany({
             where: {
                 franchiseeId: req.user.sys_id,
