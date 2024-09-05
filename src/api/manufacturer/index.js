@@ -8,6 +8,6 @@ const router = Router();
 
 router.post('/bikes', verifyJWT, isManufacturer, addBike);
 router.get('/bikes', verifyJWT, isManufacturer, getBikes);
-router.patch('/bikes/:bikeId/status', verifyJWT, isManufacturer, updateBikeStatus);
+router.put('/bikes/:bikeId/status', verifyJWT, isManufacturer, updateBikeStatus);
 
 module.exports = router;
