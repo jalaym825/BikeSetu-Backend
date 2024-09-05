@@ -27,6 +27,7 @@ model BikeModals {
   brand        Brand    @relation(fields: [brandId], references: [id])
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  Bike         Bike[]
 }
 
 model Brand {
@@ -35,4 +36,106 @@ model Brand {
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
   bikes     BikeModals[]
+}
+
+enum ROLES {
+  MANUFACTURER
+  YARD_MANAGER
+  FRANCHISEE_MANAGER
+  CUSTOMER
+}
+
+model Users {
+  sys_id        String  @id @default(cuid())
+  username      String  @unique
+  avatar        String?
+  email         String  @unique
+  firstName     String
+  lastName      String?
+  password      String
+  isPasswordSet Boolean @default(false)
+
+  roles      ROLES[] @default([CUSTOMER])
+  blocked    Boolean @default(false)
+  isVerified Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  verification_tokens   VerificationTokens[]  @relation("verificationToken")
+  password_reset_tokens PasswordResetTokens[] @relation("resetPasswordToken")
+  customerBikes         Bike[]                @relation("CustomerBikes")
+}
+
+model VerificationTokens {
+  userId    String   @unique
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime
+  user      Users    @relation("verificationToken", fields: [userId], references: [sys_id])
+}
+
+model PasswordResetTokens {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user Users @relation("resetPasswordToken", fields: [userId], references: [sys_id])
+}
+
+enum BikeStatus {
+  MANUFACTURING
+  MANUFACTURED
+  IN_TRANSIT_TO_YARD
+  AT_BIKESETU_YARD
+  IN_TRANSIT_TO_FRANCHISEE
+  AT_FRANCHISEE
+  DELIVERED_TO_CUSTOMER
+}
+
+model Bike {
+  id              String     @id @default(uuid())
+  modalId         String
+  modal           BikeModals @relation(fields: [modalId], references: [id])
+  status          BikeStatus
+  currentLocation String
+  manufacturerId  String
+  manufacturer    Location   @relation("ManufacturerBikes", fields: [manufacturerId], references: [id])
+  bikesetuYardId  String?
+  bikesetuYard    Location?  @relation("BikesetuYardBikes", fields: [bikesetuYardId], references: [id])
+  franchiseeId    String?
+  franchisee      Location?  @relation("FranchiseeBikes", fields: [franchiseeId], references: [id])
+  customerId      String?
+  customer        Users?     @relation("CustomerBikes", fields: [customerId], references: [sys_id])
+  arrivalDate     DateTime?
+  departureDate   DateTime?
+  deliveryDate    DateTime?
+  nextDestination String?
+  notes           String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model Location {
+  id                String       @id @default(uuid())
+  name              String
+  type              LocationType
+  address           String
+  city              String
+  state             String
+  country           String
+  postalCode        String
+  manufacturerBikes Bike[]       @relation("ManufacturerBikes")
+  bikesetuYardBikes Bike[]       @relation("BikesetuYardBikes")
+  franchiseeBikes   Bike[]       @relation("FranchiseeBikes")
+}
+
+enum LocationType {
+  MANUFACTURER
+  BIKESETU_YARD
+  FRANCHISEE
+  CUSTOMER
 }

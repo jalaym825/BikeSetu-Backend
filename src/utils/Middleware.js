@@ -7,8 +7,7 @@ const { rateLimits } = require('./Utils');
 
 const validateSchema = (schema) => async (req, res, next) => {
     try {
-        const parsedBody = await schema.parseAsync(req.body);
-        req.body = parsedBody;
+        req.body = await schema.parseAsync(req.body);
         next();
     }
     catch (err) {
@@ -69,6 +68,31 @@ const verifyJWT = async (req, res, next) => {
     } catch (error) {
         next({ path: "/middleware/verifyJWT", statusCode: 500, message: error.message, extraData: error })
     }
+}
+
+const isManufacturer = async (req, res, next) => {
+    try {
+        const { email } = req.body;
+        let manufacturer = await prisma.users.findUnique({
+            where: {
+                email: email.toLowerCase(),
+            },
+        });
+        if (!manufacturer || !manufacturer.roles.includes("MANUFACTURER")) {
+            logger.warn(`[/middleware/isManufacturer] - manufacturer not found`);
+            logger.debug(`[/middleware/isManufacturer] - email: ${email}`);
+            return res.status(400).json({
+                error: "Manufacturer not found",
+            });
+        }
+        logger.info(`[/middleware/isManufacturer] - manufacturer: ${manufacturer.sys_id} found`);
+        req.manufacturer = manufacturer;
+        next();
+    } catch (error) {
+        logger.error(`[/middleware/isManufacturer] - ${error.stack}`);
+        next({ status: 400, message: error.message, extraData: error })
+    }
+
 }
 
 const isUser = async (req, res, next) => {
@@ -134,5 +158,6 @@ module.exports = {
     isVerified,
     verificationMailSent,
     validateSchema,
-    errorMiddleware
+    errorMiddleware,
+    isManufacturer
 }

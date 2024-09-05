@@ -18,7 +18,7 @@ const server = http.createServer(app);
 app.use(morgan("[:date[clf]] :method :url :status :res[content-length] - :response-time ms"));
 
 app.use(cors({
-  origin: ['http://localhost:4173', 'http://localhost:5173'],
+  origin: ['http://localhost:4173', 'http://localhost:5173', 'https://hoppscotch.io'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true
 }));
