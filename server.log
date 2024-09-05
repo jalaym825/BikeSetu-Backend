@@ -1,0 +1,10 @@
+05-09-2024 15:14:17 debug: Unhandled Rejection at:  Promise [object Promise] reason: PrismaClientInitializationError: [1;91merror[0m: [1mEnvironment variable not found: DATABASE_URL.[0m
+  [1;94m-->[0m  [4mschema.prisma:13[0m
+[1;94m   | [0m
+[1;94m12 | [0m  provider = "postgresql"
+[1;94m13 | [0m  url      = [1;91menv("DATABASE_URL")[0m
+[1;94m   | [0m
+
+Validation Error Count: 1
+05-09-2024 15:32:22 warn: [/middleware/verifyJWT] - token missing
+05-09-2024 15:32:22 debug: [/middleware/verifyJWT] - token: undefined
