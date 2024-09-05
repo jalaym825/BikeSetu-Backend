@@ -19,7 +19,7 @@ module.exports = async function(req, res)  {
                 where: { id },
                 data: {
                     status: newStatus,
-                    yardId: newStatus === 'AT_BIKESETU_YARD' ? req.user.sys_id : undefined,
+                    bikesetuYardId: newStatus === 'AT_BIKESETU_YARD' ? req.user.sys_id : undefined,
                     arrivalDate: newStatus === 'AT_BIKESETU_YARD' ? new Date() : bike.arrivalDate,
                     departureDate: newStatus === 'IN_TRANSIT_TO_FRANCHISEE' ? new Date() : bike.departureDate,
                     franchiseeId: newStatus === 'IN_TRANSIT_TO_FRANCHISEE' ? "cm0pa3an800011oomozizk53z" : undefined,
