@@ -6,7 +6,7 @@ module.exports = async function(req, res)  {
 
         const bikes = await prisma.bike.findMany({
             where: {
-                bikesetuYardId: req.user.sys_id,
+                franchiseeId: req.user.sys_id,
                 status: status ? status : undefined,
             },
             include: {
@@ -20,7 +20,7 @@ module.exports = async function(req, res)  {
 
         res.json(bikes);
     } catch (error) {
-        console.error('Error fetching yard bikes:', error);
+        console.error('Error fetching franchisee bikes:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }
